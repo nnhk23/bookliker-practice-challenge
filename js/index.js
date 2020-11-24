@@ -3,7 +3,18 @@ const UserURL = "http://localhost:3000/users"
 
 document.addEventListener("DOMContentLoaded", function() {   
     renderAllBooks()
+    getFirstUser()
 });
+
+function getFirstUser() {
+    return fetch(UserURL)
+    .then(resp => resp.json())
+    .then(users => renderUser(users[0]))
+}
+
+function renderUser(user) {
+    self = user
+}
 
 function renderAllBooks() {
     fetch(URL)
@@ -30,7 +41,6 @@ function renderEachBook(book) {
     const bookSub = document.createElement('h2')
     const bookAuthor = document.createElement('h2')
     const des = document.createElement('p')
-    // const likeList = document.createElement('ul')
     const btn = document.createElement('button')
     
     bookInfo.innerHTML = ""
@@ -65,8 +75,7 @@ function addLikers(book) {
 function updateLikeList(e, book) {
     const btn = document.querySelector('button') 
     const id = book.id
-    const self = {"id":1, "username":"pouros"}
-
+    
     if (btn.innerText == 'LIKE') {
         btn.innerText = 'UNLIKE'
         const likerObj = {
@@ -87,7 +96,6 @@ function updateLikeList(e, book) {
         })
     } else {
         btn.innerText = 'LIKE'
-        // debugger
         const likerObj = {
             method: 'PATCH',
             headers: {
@@ -109,16 +117,18 @@ function updateLikeList(e, book) {
 }
 
 function addLike(book) {
-    const self = {"id":1, "username":"pouros"}
     const liker = document.createElement('li')
     const likeList = document.querySelector('#like-list')
     
-    liker.innerText = self.username
-    likeList.appendChild(liker)
+    if (likeList.lastElementChild.innerText != self.username) {
+        liker.innerText = self.username
+        likeList.appendChild(liker)
+    } else {
+        alert('Already liked this book.')
+    }
 }
 
 function removeLike(book) {
-    const self = {"id":1, "username":"pouros"}
     const likeList = document.querySelector('#like-list')
 
     if (self) {
